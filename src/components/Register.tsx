@@ -3,7 +3,7 @@ import { FormikValues, useFormik } from "formik";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { User } from "../interfaces/User";
-import { addUser, loginUser } from "../service/usersService";
+import { addUser } from "../service/usersService";
 
 interface LoginProps {}
 
@@ -11,12 +11,12 @@ const Login: FunctionComponent<LoginProps> = () => {
   const navigate: NavigateFunction = useNavigate();
   const formik: FormikValues = useFormik<FormikValues>({
     initialValues: {
-      // name: "",
+      name: "",
       email: "",
       password: "",
     },
     validationSchema: yup.object({
-      // name: yup.string().required().min(2),
+      name: yup.string().required().min(2),
       email: yup.string().email().required(),
       password: yup
         .string()
@@ -25,7 +25,7 @@ const Login: FunctionComponent<LoginProps> = () => {
         .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     }),
     onSubmit: (values) => {
-      loginUser(values.email, values.password)
+      addUser(values as User)
         .then(() => navigate("/home"))
         .catch((err) => {
           console.log(err);
@@ -39,9 +39,9 @@ const Login: FunctionComponent<LoginProps> = () => {
         Book Collection
       </h1>
       <div className="container d-flex justify-content-center align-items-center flex-column">
-        <h5 className="display-5">Login</h5>
+        <h5 className="display-5">Register</h5>
         <form onSubmit={formik.handleSubmit}>
-          {/* <div className="form-floating mb-3">
+          <div className="form-floating mb-3">
             <input
               type="text"
               className="form-control"
@@ -56,7 +56,7 @@ const Login: FunctionComponent<LoginProps> = () => {
             {formik.touched.name && formik.errors.name && (
               <p className="text-danger">{formik.errors.name}</p>
             )}
-          </div> */}
+          </div>
           <div className="form-floating mb-3">
             <input
               type="email"
@@ -99,9 +99,6 @@ const Login: FunctionComponent<LoginProps> = () => {
           {/* <button className="btn btn-secondary" onClick={() => navigate(-1)}>
             Back
           </button> */}
-          <div>
-            Don't have an account? <a href="/register">Register</a>
-          </div>
         </form>
       </div>
     </>
