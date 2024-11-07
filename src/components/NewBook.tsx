@@ -1,10 +1,15 @@
 import { FunctionComponent } from "react";
 import { FormikValues, useFormik } from "formik";
 import * as yup from "yup";
+import { addBook } from "../service/booksService";
+import { Book } from "../interfaces/Book";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+interface NewBookProps {
+  setIsNewContent: Function;
+}
 
-interface NewBookProps {}
-
-const NewBook: FunctionComponent<NewBookProps> = () => {
+const NewBook: FunctionComponent<NewBookProps> = ({ setIsNewContent }) => {
+  const navigate: NavigateFunction = useNavigate();
   const formik: FormikValues = useFormik<FormikValues>({
     initialValues: {
       bookName: "",
@@ -19,8 +24,11 @@ const NewBook: FunctionComponent<NewBookProps> = () => {
       price: yup.number().required(),
     }),
     onSubmit: (values) => {
-      addBook(values.email, values.password)
-        .then(() => navigate("/home"))
+      addBook(values as Book)
+        .then(() => {
+          navigate("/home");
+          setIsNewContent(true);
+        })
         .catch((err) => {
           console.log(err);
           navigate("/");
@@ -30,37 +38,69 @@ const NewBook: FunctionComponent<NewBookProps> = () => {
 
   return (
     <>
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} className="w-25 m-4">
         <div className="form-floating mb-3">
           <input
-            type="email"
+            type="text"
             className="form-control"
-            id="email"
-            placeholder="john@doe.com"
-            name="email"
-            value={formik.values.email}
+            id="bookName"
+            placeholder="Harry Potter"
+            name="bookName"
+            value={formik.values.bookName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <label htmlFor="floatingInput">Email</label>
-          {formik.touched.email && formik.errors.email && (
-            <p className="text-danger">{formik.errors.email}</p>
+          <label htmlFor="floatingInput">Book Name</label>
+          {formik.touched.bookName && formik.errors.bookName && (
+            <p className="text-danger">{formik.errors.bookName}</p>
           )}
         </div>
         <div className="form-floating mb-3">
           <input
-            type="password"
+            type="text"
             className="form-control"
-            id="password"
-            placeholder="052-8536253"
-            name="password"
-            value={formik.values.password}
+            id="author"
+            placeholder="Author"
+            name="author"
+            value={formik.values.author}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />
-          <label htmlFor="floatingInput">Password</label>
-          {formik.touched.password && formik.errors.password && (
-            <p className="text-danger">{formik.errors.password}</p>
+          <label htmlFor="floatingInput">Author</label>
+          {formik.touched.author && formik.errors.author && (
+            <p className="text-danger">{formik.errors.author}</p>
+          )}
+        </div>
+        <div className="form-floating mb-3">
+          <input
+            type="text"
+            className="form-control"
+            id="genre"
+            placeholder="Novel"
+            name="genre"
+            value={formik.values.genre}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          <label htmlFor="floatingInput">Genre</label>
+          {formik.touched.genre && formik.errors.genre && (
+            <p className="text-danger">{formik.errors.genre}</p>
+          )}
+        </div>
+        <div className="form-floating mb-3">
+          <input
+            type="number"
+            className="form-control"
+            id="price"
+            placeholder="price"
+            name="price"
+            value={formik.values.price}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          <label htmlFor="floatingInput">Price</label>
+          {formik.touched.price && formik.errors.price && (
+            <p className="text-danger">{formik.errors.price}</p>
           )}
         </div>
         <button
@@ -68,11 +108,8 @@ const NewBook: FunctionComponent<NewBookProps> = () => {
           type="submit"
           disabled={!formik.isValid || !formik.dirty}
         >
-          Login
+          Add
         </button>
-        <div>
-          Don't have an account? <a href="/register">Register</a>
-        </div>
       </form>
     </>
   );

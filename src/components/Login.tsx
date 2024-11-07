@@ -1,11 +1,6 @@
 import { FunctionComponent } from "react";
 import { FormikValues, useFormik } from "formik";
-import {
-  NavigateFunction,
-  Route,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { NavigateFunction, useNavigate, useParams } from "react-router-dom";
 import * as yup from "yup";
 import { User } from "../interfaces/User";
 import { loginUser } from "../service/usersService";
@@ -18,12 +13,10 @@ const Login: FunctionComponent<LoginProps> = () => {
   const navigate: NavigateFunction = useNavigate();
   const formik: FormikValues = useFormik<FormikValues>({
     initialValues: {
-      // name: "",
       email: "",
       password: "",
     },
     validationSchema: yup.object({
-      // name: yup.string().required().min(2),
       email: yup.string().email().required(),
       password: yup
         .string()
