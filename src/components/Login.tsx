@@ -1,13 +1,20 @@
 import { FunctionComponent } from "react";
 import { FormikValues, useFormik } from "formik";
-import { NavigateFunction, useNavigate } from "react-router-dom";
+import {
+  NavigateFunction,
+  Route,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import * as yup from "yup";
 import { User } from "../interfaces/User";
-import { addUser, loginUser } from "../service/usersService";
+import { loginUser } from "../service/usersService";
+import Header from "./Header";
 
 interface LoginProps {}
 
 const Login: FunctionComponent<LoginProps> = () => {
+  const { email, password } = useParams();
   const navigate: NavigateFunction = useNavigate();
   const formik: FormikValues = useFormik<FormikValues>({
     initialValues: {
@@ -35,28 +42,10 @@ const Login: FunctionComponent<LoginProps> = () => {
   });
   return (
     <>
-      <h1 className="display-1 text-center bg-black text-white">
-        Book Collection
-      </h1>
+      <Header />
       <div className="container d-flex justify-content-center align-items-center flex-column">
         <h5 className="display-5">Login</h5>
         <form onSubmit={formik.handleSubmit}>
-          {/* <div className="form-floating mb-3">
-            <input
-              type="text"
-              className="form-control"
-              id="name"
-              placeholder="John"
-              name="name"
-              value={formik.values.name}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <label htmlFor="floatingInput">Name</label>
-            {formik.touched.name && formik.errors.name && (
-              <p className="text-danger">{formik.errors.name}</p>
-            )}
-          </div> */}
           <div className="form-floating mb-3">
             <input
               type="email"
@@ -94,11 +83,8 @@ const Login: FunctionComponent<LoginProps> = () => {
             type="submit"
             disabled={!formik.isValid || !formik.dirty}
           >
-            Add
+            Login
           </button>
-          {/* <button className="btn btn-secondary" onClick={() => navigate(-1)}>
-            Back
-          </button> */}
           <div>
             Don't have an account? <a href="/register">Register</a>
           </div>

@@ -12,5 +12,23 @@
       "password": "aabbccdd",
       "name": "Sam 2"
     }
+  ],
+
+
+  "books": [
+    {
+      "id": "1",
+      "name": "Harry Potter 2",
+      "author": "JK Rowling",
+      "genres": "Novel",
+      "price": 140
+    },
+    {
+      "id": "1",
+      "name": "Harry Potter",
+      "author": "JK Rowling",
+      "genres": "Novel",
+      "price": 250
+    }
   ]
 }
