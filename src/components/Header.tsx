@@ -1,26 +1,25 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
+import { redirect } from "react-router-dom";
 
 interface HeaderProps {}
 
 const Header: FunctionComponent<HeaderProps> = () => {
+  const storedValue = sessionStorage.getItem("loggedIn");
+  // useEffect(() => {
+  //   if (!storedValue) {
+  //     redirect("/login");
+  //   }
+  // });
   return (
     <>
-      <h1 className="display-1 text-center bg-black text-white py-4">
-        Book Collection
-      </h1>
+      <div className=" bg-black text-white py-4">
+        <h1 className="display-1 text-center">Book Collection</h1>
+        <p className="display-6 text-start">
+          {storedValue ? `Welcome, ${JSON.parse(storedValue).email}` : ""}
+        </p>
+      </div>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
@@ -28,7 +27,17 @@ const Header: FunctionComponent<HeaderProps> = () => {
                   Home
                 </a>
               </li>
-              <li className="nav-item"></li>
+              <li className="nav-item">
+                <button
+                  className="btn btn-danger align-start"
+                  onClick={() => {
+                    sessionStorage.removeItem("loggedIn");
+                    redirect("/login");
+                  }}
+                >
+                  Logout
+                </button>
+              </li>
             </ul>
           </div>
         </div>
